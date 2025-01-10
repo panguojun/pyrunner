@@ -112,7 +112,6 @@ Begin VB.Form Form1
       Height          =   375
       Left            =   600
       TabIndex        =   2
-      Text            =   ""
       Top             =   120
       Width           =   7575
    End
@@ -283,9 +282,20 @@ Private Sub Form_Load()
     Dim pythonScriptPath As String
     Dim configFilePath As String
     Dim objStream As Object
+    Dim fso As Object
 
     pythonScriptPath = App.Path & "\script.py" ' 脚本文件路径
     configFilePath = App.Path & "\config.txt" ' 配置文件路径
+
+    ' 创建文件系统对象
+    Set fso = CreateObject("Scripting.FileSystemObject")
+
+    ' 检查script.py是否存在，如果不存在则创建一个新的空文件
+    If Not fso.FileExists(pythonScriptPath) Then
+        Dim newFile As Object
+        Set newFile = fso.CreateTextFile(pythonScriptPath, True) ' 创建新文件
+        newFile.Close ' 关闭文件
+    End If
 
     ' 读取UTF-8编码的Python脚本文件内容并显示在文本框中
     Set objStream = CreateObject("ADODB.Stream")
