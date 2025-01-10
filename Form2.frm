@@ -141,6 +141,7 @@ Private Sub Command1_Click()
     Dim fileName As String
     Dim userInput As String
     Dim objStream As Object
+    Dim folderPath As String
     
     ' 获取当前日期和毫秒数
     Dim currentDate As String
@@ -161,7 +162,16 @@ Private Sub Command1_Click()
     ' 根据用户输入的文件名保存文件
     If userInput <> "" Then
         On Error GoTo ErrorHandler ' 启用错误处理
-        fileName = App.Path & "\saved\" & userInput
+        
+        ' 设置文件夹路径
+        folderPath = App.Path & "\saved\"
+        
+        ' 检查文件夹是否存在，如果不存在则创建
+        If Dir(folderPath, vbDirectory) = "" Then
+            MkDir folderPath
+        End If
+        
+        fileName = folderPath & userInput
         
         ' 使用ADODB.Stream来支持UTF-8编码
         Set objStream = CreateObject("ADODB.Stream")
