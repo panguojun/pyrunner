@@ -306,6 +306,15 @@ Private Sub Form_Load()
     Text1.Text = objStream.ReadText
     objStream.Close
 
+    ' 检查config.txt是否存在，如果不存在则提示并创建一个新的配置文件
+    If Not fso.FileExists(configFilePath) Then
+        MsgBox "配置文件不存在，将创建一个新的配置文件。", vbInformation, "提示"
+        Dim newConfigFile As Object
+        Set newConfigFile = fso.CreateTextFile(configFilePath, True) ' 创建新配置文件
+        newConfigFile.WriteLine "C:\Python3x\" ' 可以写入一些默认内容
+        newConfigFile.Close ' 关闭文件
+    End If
+
     ' 读取配置文件内容并显示在Text2文本框中
     Set objStream = CreateObject("ADODB.Stream")
     objStream.Type = 2 ' adTypeText
